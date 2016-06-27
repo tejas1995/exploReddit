@@ -2,8 +2,7 @@ import praw
 import math
 
 from tabulate import tabulate
-from sigmoid import sig
-
+from normalizeScore import normalized
 
 class User:
 
@@ -17,32 +16,40 @@ class User:
 
     def getScore(self):
 
-        subm = self.user.get_submitted(limit=None)
-        for s in subm:
-            if s.subreddit.display_name in self.subScore:
-                self.subScore[s.subreddit.display_name] += 2*s.score
-            else:
-                self.subScore[s.subreddit.display_name] = 2*s.score
+        self.totalScore = 0
 
-        comt = self.user.get_comments(limit=None)
-        for c in comt:
-            if c.subreddit.display_name in self.subScore:
-                self.subScore[c.subreddit.display_name] += c.score
-            else:
-                self.subScore[c.subreddit.display_name] = c.score
+        try:
+            subm = self.user.get_submitted(limit=None)
+            for s in subm:
+                if s.subreddit.display_name in self.subScore:
+                    self.subScore[s.subreddit.display_name] += s.score
+                else:
+                    self.subScore[s.subreddit.display_name] = s.score
+                self.totalScore += s.score
+
+            comt = self.user.get_comments(limit=None)
+            for c in comt:
+                if c.subreddit.display_name in self.subScore:
+                    self.subScore[c.subreddit.display_name] += c.score
+                else:
+                    self.subScore[c.subreddit.display_name] = c.score
+                self.totalScore += c.score
+        except praw.errors.NotFound:
+            print "User does not exist!"
+
+        print "Total Score:", self.totalScore
 
 
     def normalizeScore(self):
 
         self.normSubScore = {}
         for sub, score in self.subScore.iteritems():
-            self.normSubScore[sub] = 5*sig(-4+8*score/500)
+            self.normSubScore[sub] = normalized(score)
 
     def printScore(self):
 
         table = []
         for key, val in self.subScore.iteritems():
             table.append([key, val, self.normSubScore[key]])
-            # print 'Subreddit:', key, '\tScore:', val, '\tNormalized:', 
-            # print "%.2f" % self.normSubScore[key]
+        table.sort(key = lambda x: x[2])
         print tabulate(table)
