@@ -19,7 +19,7 @@ class User:
         self.totalScore = 0
 
         try:
-            subm = self.user.get_submitted(limit=None)
+            subm = self.user.get_submitted(limit=200)
             for s in subm:
                 if s.subreddit.display_name in self.subScore:
                     self.subScore[s.subreddit.display_name] += s.score
@@ -27,17 +27,16 @@ class User:
                     self.subScore[s.subreddit.display_name] = s.score
                 self.totalScore += s.score
 
-            comt = self.user.get_comments(limit=None)
+            comt = self.user.get_comments(limit=500)
             for c in comt:
                 if c.subreddit.display_name in self.subScore:
                     self.subScore[c.subreddit.display_name] += c.score
                 else:
                     self.subScore[c.subreddit.display_name] = c.score
                 self.totalScore += c.score
+
         except praw.errors.NotFound:
             print "User does not exist!"
-
-        print "Total Score:", self.totalScore
 
 
     def normalizeScore(self):
@@ -51,5 +50,5 @@ class User:
         table = []
         for key, val in self.subScore.iteritems():
             table.append([key, val, self.normSubScore[key]])
-        table.sort(key = lambda x: x[2])
+        table.sort(key = lambda x: x[1])
         print tabulate(table)
