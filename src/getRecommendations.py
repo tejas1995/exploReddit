@@ -3,7 +3,19 @@ import numpy as np
 from loadUserData import loadUserData
 from user import User
 
+
+username = raw_input("Enter username (e.g. CrazyFart) : ")
+
+print "Getting your subreddit likings..."
+u = User(username, 0)
+u.getScore()
+u.normalizeScore()
+
+
+print "Loading other users' Reddit data..."
+
 listUsers = loadUserData()
+listUsers = [u] + listUsers     # Adding new user to listUsers
 
 listSubs = {}
 for u in listUsers:
@@ -17,7 +29,7 @@ listSubs = [s for s in listSubs if listSubs[s] >= 5]
 # listSubs = [s for s in listSubs]
 
 numSubs = len(listSubs)
-numUsers = len(listUsers)
+numUsers = len(listUsers)+1
 print numSubs
 
 R = np.zeros((numSubs, numUsers))
