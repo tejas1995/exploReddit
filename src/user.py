@@ -6,12 +6,13 @@ from normalizeScore import normalized
 
 class User:
 
-    def __init__(self, username):
+    def __init__(self, username, id):
 
         r = praw.Reddit(user_agent = 'new_redditor')
         self.username = username
         self.subScore = {}
         self.normSubScore = {}
+        self.id = id
 
 
     def getScore(self):
@@ -54,7 +55,7 @@ class User:
     def printScore(self):
 
         table = []
-        for key, val in self.subScore.iteritems():
-            table.append([key, val, self.normSubScore[key]])
+        for key, val in self.normSubScore.iteritems():
+            table.append([key, val])
         table.sort(key = lambda x: x[1])
         print tabulate(table)
