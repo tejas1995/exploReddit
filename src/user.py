@@ -10,12 +10,13 @@ class User:
 
         r = praw.Reddit(user_agent = 'new_redditor')
         self.username = username
-        self.user = r.get_redditor(self.username)
         self.subScore = {}
+        self.normSubScore = {}
 
 
     def getScore(self):
 
+        self.user = r.get_redditor(self.username)
         self.totalScore = 0
 
         try:
@@ -41,9 +42,14 @@ class User:
 
     def normalizeScore(self):
 
-        self.normSubScore = {}
         for sub, score in self.subScore.iteritems():
             self.normSubScore[sub] = normalized(score)
+
+
+    def setNormScore(self, normScoreDict):
+
+        self.normSubScore = normScoreDict
+
 
     def printScore(self):
 
