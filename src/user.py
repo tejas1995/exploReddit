@@ -8,7 +8,7 @@ class User:
 
     def __init__(self, username, id):
 
-        r = praw.Reddit(user_agent = 'new_redditor')
+        self.r = praw.Reddit(user_agent = 'new_redditor')
         self.username = username
         self.subScore = {}
         self.normSubScore = {}
@@ -17,7 +17,7 @@ class User:
 
     def getScore(self):
 
-        self.user = r.get_redditor(self.username)
+        self.user = self.r.get_redditor(self.username)
         self.totalScore = 0
 
         try:
