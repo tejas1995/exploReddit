@@ -1,53 +1,30 @@
-import time
-import requests
-import requests.auth
-import praw
-from bs4 import BeautifulSoup
-from urllib2 import urlopen, Request
-import urllib
+import json
 
-inputFile = open('../data/popularSubs.txt', 'r')
+from user import User
 
-subList = inputFile.readlines()
-subList = [sub.rstrip() for sub in subList]
+userFile = open('../data/usersList.txt', 'r')
+listUsers = userFile.readlines()
+listUsers = [u.rstrip() for u in listUsers]
 
-listUsers = []
+userDataFile = open('../data/userData.txt', 'w')
 
-# Set base URLs
-user_agent = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.7) Gecko/2009021910 Firefox/3.0.7'
+data = []
+i = 1
 
-def makeSoup(url):
+for u in listUsers:
 
-    hdr = {'User-Agent': user_agent,
-           'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-           }
-    req = Request(url, headers=hdr)
-    html = urlopen(req).read()
-    soup = BeautifulSoup(html, "lxml")
-    return soup
+    try:
+        # print "Getting data for user No.", i, ":", u, "..."
+        newUser = User(u)
+        newUser.getScore()
+        newUser.normalizeScore()
+        print "Extracted subreddit data for user No.", i, ":", u
 
+        userData = {'username': u, 'data': newUser.normSubScore}
+        data.append(userData)
+    except:
+        print "Data extraction failed for user No.", i, ":", u
+    i += 1
 
-for sub in subList:
-
-    topUrl = 'http://www.reddit.com/r/' + sub + '/top/?sort=top&t=month'
-    soup = makeSoup(topUrl)
-
-    print "Subreddit:", sub
-    print "---------------------------"
-
-    for i in range(1, 11):
-        try:
-            topDiv = soup.find(attrs={"data-rank": str(i)})
-            topDivOP = topDiv.find('p', attrs={"class": "tagline"}).find("a").string
- 
-            if (topDivOP not in listUsers) is True:
-                print topDivOP
-                listUsers.append(topDivOP)
-        except:
-            break
-
-print len(listUsers)
-
-userFile = open('../data/usersList.txt', 'w')
-for user in listUsers:
-    userFile.write(user + '\n')
+with open('../data/userData.json', 'w') as datafile:
+    json.dump(data, datafile, indent=4, ensure_ascii=False)
