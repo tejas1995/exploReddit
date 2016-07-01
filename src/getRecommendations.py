@@ -14,6 +14,8 @@ while usernameValid is False:
     username = raw_input("Enter username (e.g. CrazyFart) : ")
     if checkUserExistence(username) is True:
         usernameValid = True
+    else:
+        print "Invalid username! Try again"
 
 # If username is not in training set, make new user and add to list
 if username not in [u.username for u in listUsers]:
@@ -34,7 +36,7 @@ for u in listUsers:
         else:
             listSubs[sub] = 1
 
-listSubs = [s for s in listSubs if listSubs[s] >= 5]
+listSubs = [str(s) for s in listSubs if listSubs[s] >= 5]
 numSubs = len(listSubs)
 numUsers = len(listUsers)
 
@@ -60,4 +62,6 @@ normY = normed[0]
 meanY = normed[1]
 
 print meanY
+
+
 

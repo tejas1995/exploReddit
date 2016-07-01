@@ -24,11 +24,11 @@ def normalizeRatings(Y, R):
     numUsers = Y.shape[1]
 
     normY = np.zeros((numSubs, numUsers))
-    meanY = np.zeros((numSubs, 1))
+    meanY = np.zeros(numSubs)
 
     for i in range(numSubs):
         numRatings = R[i].nonzero()[0].size
-        meanY[i] = sum(Y[i]*R[i])/numRatings
+        meanY[i] = round(sum(Y[i]*R[i])/numRatings, 2)
         normY[i] = Y[i] - meanY[i]
 
     return [normY, meanY]
