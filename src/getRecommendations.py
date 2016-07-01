@@ -1,4 +1,5 @@
 import numpy as np
+import random
 
 from loadUserData import loadUserData
 from user import User, checkUserExistence
@@ -56,6 +57,7 @@ for u in listUsers:
             Y[i][j] = u.normSubScore[s]
             R[i][j] = 1
 
+print "Here"
 # Get normalized Y (normY) and meanY
 normed = normalizeRatings(Y, R)
 normY = normed[0]
@@ -63,5 +65,16 @@ meanY = normed[1]
 
 print meanY
 
+numFeatures = 10
 
+X = np.zeros((numSubs, numFeatures))
+Theta = np.zeros((numUsers, numFeatures))
+
+for i in range(numSubs):
+    for j in range(numFeatures):
+        X[i][j] = random.random()
+
+for i in range(numUsers):
+    for j in range(numFeatures):
+        Theta[i][j] = random.random()
 
