@@ -59,3 +59,16 @@ class User:
             table.append([key, val])
         table.sort(key = lambda x: x[1])
         print tabulate(table)
+
+
+def checkUserExistence(username):
+
+    r = praw.Reddit(user_agent = "check_user")
+    try:
+        subm = r.get_redditor(username).get_submitted(limit=5)
+        for s in subm:
+            continue
+    except:
+        return False
+    return True
+
