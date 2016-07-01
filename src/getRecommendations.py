@@ -1,21 +1,28 @@
 import numpy as np
 
 from loadUserData import loadUserData
-from user import User
+from user import User, checkUserExistence
 
+# Load list of training set users
+listUsers = loadUserData()
 
-username = raw_input("Enter username (e.g. CrazyFart) : ")
+# Getting a valid username
+usernameValid = False
+while usernameValid is False:
+    username = raw_input("Enter username (e.g. CrazyFart) : ")
+    if checkUserExistence(username) is True:
+        usernameValid = True
 
-print "Getting your subreddit likings..."
-u = User(username, 0)
-u.getScore()
-u.normalizeScore()
+# If username is not in training set, make new user and add to list
+if username not in [u.username for u in listUsers]:
+    print "Getting your subreddit likings..."
+    u = User(username, len(listUsers))
+    u.getScore()
+    u.normalizeScore()
+    listUsers.append(u)     # Adding new user to listUsers 
 
 
 print "Loading other users' Reddit data..."
-
-listUsers = loadUserData()
-listUsers = [u] + listUsers     # Adding new user to listUsers
 
 listSubs = {}
 for u in listUsers:
@@ -26,11 +33,8 @@ for u in listUsers:
             listSubs[sub] = 1
 
 listSubs = [s for s in listSubs if listSubs[s] >= 5]
-# listSubs = [s for s in listSubs]
-
 numSubs = len(listSubs)
-numUsers = len(listUsers)+1
-print numSubs
+numUsers = len(listUsers)
 
 R = np.zeros((numSubs, numUsers))
 Y = np.zeros((numSubs, numUsers))

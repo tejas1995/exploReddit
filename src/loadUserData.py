@@ -10,7 +10,7 @@ def loadUserData():
 
     for data in userData:
         
-        u = User(data['username'], len(listUsers)+1)
+        u = User(data['username'], len(listUsers))
         u.setNormScore(data['data'])
         # print "User", u.username
         # u.printScore()
