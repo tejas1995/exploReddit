@@ -1,4 +1,7 @@
-def normalized(score):
+import numpy as np
+
+
+def normalizedScore(score):
 
     if(score <= 0):
         return 0
@@ -14,3 +17,18 @@ def normalized(score):
         return 4 + round((score-300)/200.0, 2)
     elif score > 500:
         return 5
+
+def normalizeRatings(Y, R):
+
+    numSubs = Y.shape[0]
+    numUsers = Y.shape[1]
+
+    normY = np.zeros((numSubs, numUsers))
+    meanY = np.zeros((numSubs, 1))
+
+    for i in range(numSubs):
+        numRatings = R[i].nonzero()[0].size
+        meanY[i] = sum(Y[i]*R[i])/numRatings
+        normY[i] = Y[i] - meanY[i]
+
+    return [normY, meanY]
