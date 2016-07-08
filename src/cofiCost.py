@@ -7,8 +7,11 @@ def cofiCost(params, Y, R, numUsers, numSubs, numFeatures, lamda):
     Theta = params[numSubs*numFeatures:].reshape(numUsers, numFeatures)
 
     # Calculate cost
-    J = sum(sum(((np.dot(X, np.transpose(Theta))-Y)**2)*R))/2
+    J = sum(sum(((X.dot(Theta.T)-Y)**2)*R))/2
+    print "Cost 1:", J
+
     J += (lamda/2)*(sum(sum(X**2)) + sum(sum(Theta**2)))
+    print "Cost 2:", J
 
     return J
 
@@ -22,14 +25,14 @@ def cofiCostGrad(params, Y, R, numUsers, numSubs, numFeatures, lamda):
     Theta_grad = np.zeros((numUsers, numFeatures))
 
     for i in range(numSubs):
-        X_grad[i] = np.dot((np.dot(X[i], Theta.T) - Y), Theta)
+        X_grad[i] = ((X[i].dot(Theta.T) - Y[i])*R[i]).dot(Theta)
         X_grad[i] += lamda*X[i]
 
     for i in range(numUsers):
-        Theta_grad[i] = np.dot(X.T, (np.dot(X, Theta.T[:,i] - Y[:,i]))*R[:,i]).T
-        Theta_grad[i] += lamda*Theta[:,i]
+        Theta_grad[i] = (X.T.dot((X.dot(Theta.T[:,i]) - Y[:,i])*R[:,i])).T
+        Theta_grad[i] += lamda*Theta[i]
 
-    res = np.concatenate((np.array(X_grad).ravel(), np.array(Theta_grad)))
+    res = np.concatenate((np.array(X_grad).ravel(), np.array(Theta_grad).ravel()))
 
     return res 
 
