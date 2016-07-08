@@ -2,7 +2,7 @@ import praw
 import math
 
 from tabulate import tabulate
-from normalizeScore import normalized
+from normalize import normalizedScore
 
 class User:
 
@@ -44,7 +44,7 @@ class User:
     def normalizeScore(self):
 
         for sub, score in self.subScore.iteritems():
-            self.normSubScore[sub] = normalized(score)
+            self.normSubScore[sub] = normalizedScore(score)
 
 
     def setNormScore(self, normScoreDict):
