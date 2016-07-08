@@ -28,7 +28,10 @@ def normalizeRatings(Y, R):
 
     for i in range(numSubs):
         numRatings = R[i].nonzero()[0].size
-        meanY[i] = round(sum(Y[i]*R[i])/numRatings, 2)
+        if numRatings is 0:
+            meanY[i] = 0
+        else:
+            meanY[i] = round(sum(Y[i]*R[i])/numRatings, 2)
         normY[i] = Y[i] - meanY[i]
 
     return [normY, meanY]
