@@ -85,7 +85,7 @@ initParams = np.concatenate((np.array(X).ravel(), np.array(Theta).ravel()))
 # Set regularization parameter
 lamda = 10
 
-costArgs = (Y, R, numUsers, numSubs, numFeatures, lamda)
+costArgs = (normY, R, numUsers, numSubs, numFeatures, lamda)
 
 optimParams = optimize.fmin_cg(cofiCost, initParams, fprime=cofiCostGrad, args=costArgs, maxiter=50)
 
