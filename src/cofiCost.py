@@ -6,14 +6,11 @@ def cofiCost(params, Y, R, numUsers, numSubs, numFeatures, lamda):
     X = params[:numSubs*numFeatures].reshape(numSubs, numFeatures)
     Theta = params[numSubs*numFeatures:].reshape(numUsers, numFeatures)
 
-    print ((X.dot(Theta.T)-Y)**2)*R/2 
-
     # Calculate cost
     J = sum(sum(((X.dot(Theta.T)-Y)**2)*R))/2
-    print "Cost 1:", J
-
     J += (lamda/2)*(sum(sum(X**2)) + sum(sum(Theta**2)))
-    print "Cost 2:", J
+
+    print "Cost:", J
 
     return J
 

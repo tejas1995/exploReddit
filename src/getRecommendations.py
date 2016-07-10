@@ -28,7 +28,6 @@ if username not in [u.username for u in listUsers]:
     u.normalizeScore()
     listUsers.append(u)     # Adding new user to listUsers 
 
-
 print "Loading other users' Reddit data..."
 
 listSubs = {}
@@ -52,8 +51,9 @@ R = np.zeros((numSubs, numUsers))
 Y = np.zeros((numSubs, numUsers))
 
 for u in listUsers:
-    for i, s in enumerate(u.normSubScore):
+    for s in u.normSubScore:
         if s in listSubs:
+            i = listSubs.index(s)
             j = u.id
             Y[i][j] = u.normSubScore[s]
             R[i][j] = 1
@@ -78,6 +78,7 @@ for i in range(numSubs):
 for i in range(numUsers):
     for j in range(numFeatures):
         Theta[i][j] = random.random()
+
 
 # Combine initial X and Theta
 initParams = np.concatenate((np.array(X).ravel(), np.array(Theta).ravel()))
