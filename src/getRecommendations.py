@@ -65,7 +65,7 @@ meanY = normed[1]
 
 numFeatures = 10
 
-print "Finding new subreddits for you to shitpost on"
+print "Finding new subreddits for you to shitpost on..."
 
 # Initialize X and Theta to small random values in [0.1)
 X = np.zeros((numSubs, numFeatures))
@@ -86,6 +86,7 @@ initParams = np.concatenate((np.array(X).ravel(), np.array(Theta).ravel()))
 # Set regularization parameter
 lamda = 10
 
+# Set arguments for collaborative filtering cost functions
 costArgs = (normY, R, numUsers, numSubs, numFeatures, lamda)
 
 optimParams = optimize.fmin_cg(cofiCost, initParams, fprime=cofiCostGrad, args=costArgs, maxiter=50)
@@ -94,5 +95,19 @@ X = optimParams[:numSubs*numFeatures].reshape(numSubs, numFeatures)
 Theta = optimParams[numSubs*numFeatures:].reshape(numUsers, numFeatures)
 
 print "Recommender system learning completed"
+
+# Get predicted subreddit ratings for all subs for user
+prediction = X.dot(Theta.T[:,1]) + meanY
+
+# Filter out subs which user has already been active on
+listSubRecs = [(listSubs[i], prediction[i]) for i in range(numSubs) if R[i][-1] == 0.0]
+
+# Sort in descending order to get best subs
+listSubRecs.sort(key=lambda x: x[1], reverse=True)
+
+# Print out subreddit suggestions for user
+print "Here are some subreddits you might enjoy:"
+for sub in listSubRecs[:10]:
+    print sub[0]
 
 
