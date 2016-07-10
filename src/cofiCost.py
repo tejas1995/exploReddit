@@ -10,8 +10,6 @@ def cofiCost(params, Y, R, numUsers, numSubs, numFeatures, lamda):
     J = sum(sum(((X.dot(Theta.T)-Y)**2)*R))/2
     J += (lamda/2)*(sum(sum(X**2)) + sum(sum(Theta**2)))
 
-    print "Cost:", J
-
     return J
 
 
