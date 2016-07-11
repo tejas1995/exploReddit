@@ -1,7 +1,7 @@
 import praw
 import math
 
-from tabulate import tabulate
+# from tabulate import tabulate
 from normalize import normalizedScore
 
 class User:
@@ -51,7 +51,7 @@ class User:
 
         self.normSubScore = normScoreDict
 
-
+    '''
     def printScore(self):
 
         table = []
@@ -59,7 +59,7 @@ class User:
             table.append([key, val])
         table.sort(key = lambda x: x[1])
         print tabulate(table)
-
+    '''
 
 def checkUserExistence(username):
 
