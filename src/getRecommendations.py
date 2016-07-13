@@ -39,7 +39,7 @@ for u in listUsers:
             listSubs[sub] = 1
 
 # Get list of subs with at least 5 users in training set using it
-listSubs = [str(s) for s in listSubs if listSubs[s] >= 5]
+listSubs = [str(s) for s in listSubs if listSubs[s] >= 10]
 
 # Set parameters numSubs, numUsers
 numSubs = len(listSubs)
@@ -109,5 +109,4 @@ listSubRecs.sort(key=lambda x: x[1], reverse=True)
 print "Here are some subreddits you might enjoy:"
 for sub in listSubRecs[:10]:
     print sub[0]
-
 
