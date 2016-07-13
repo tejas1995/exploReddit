@@ -2,7 +2,7 @@
 
 ## About
 
-exploReddit is a subreddit recommendation system, that suggests new subreddits for you to explore based on your commenting and submission history on Reddit.
+exploReddit is a subreddit recommendation system, that suggests new subreddits for you to browse based on your commenting and submission history on Reddit.
 
 ## Installation
 
@@ -23,4 +23,4 @@ sudo pip install praw
 
 ## Running
 
-To get subreddit recommendations, download the source, unzip and navigate to the project directory, and run ```python src/getRecommendations.py```. Enter your Reddit username, find some new subreddits you'll enjoy, start browsing them and get that sweet, sweet karma!
+To get subreddit recommendations, download the source and unzip, navigate to the project directory and then into the ```src``` directory, and run ```python getRecommendations.py```. Enter your Reddit username, find some new subreddits you'll enjoy, start browsing them and get that sweet, sweet karma!
